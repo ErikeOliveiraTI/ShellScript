@@ -1,0 +1,86 @@
+#!/bin/bash
+# bloco das Funções
+Grupo()	#Funções  para criar grupo
+{
+	read -p "Digite o nome grupo ha se criado: " GRUPO  
+	if [ "$(cat /etc/group | cut -d: -f 1 | grep $GRUPO)" != $GRUPO ]
+	then
+		groupadd $GRUPO
+
+	else
+		echo "!!ERRO!!"
+		echo "$GRUPO ja existe!"   
+		echo "Digite novamente! "
+		Grupo
+
+	fi
+}
+
+User() #Função para criar usuario
+{
+	read -p "Digite o nome do usuario: " USER
+	if [ "$(cat /etc/passwd | cut -d: -f1 | grep $USER)"  != $USER ]
+	then
+		useradd -g $GRUPO $USER
+		passwd $USER
+	else
+		echo "!!ERRO!!"
+		echo "$USER ja existe!"
+		echo "Digite novamente!"
+		User
+	fi
+}
+
+CriarDiretorio() #Funçãopara criar Diretorio
+{
+	mkdir /$USER
+	cd /
+	chown $USER $USER/
+	chgrp $GRUPO $USER
+	chmod 1770 $USER
+	cd
+	
+	
+}
+
+EscolhaDeAcao() #Fução criar usuario ou grupo
+{
+	echo " a) Criar usuario é adiciona em um grupo: "
+	echo " b) Criar Grupo e Usuario:  "
+	read -p "Deseja: " OPCAO
+	case $OPCAO in
+		a) while true
+			 do
+			 C=$(wc -l /etc/group | cut -d" " -f1)
+			 O=$[C-58]
+			 for i in "$(tail -$O /etc/group | cut -d: -f1)"
+			 do
+			 	echo "$i"
+			 done 
+			 read -p "Digite o nome do grupo escolhido: " GRUPO
+			 read -p  "Digite novo usuario: " USER
+			 if [ "$(cat /etc/passwd | cut -d: -f1 | grep $USER)"  != $USER ]
+			 then
+			 	useradd -g $GRUPO $USER
+			 	passwd $USER
+			 	CriarDiretorio
+			 	Sair
+			else
+				echo "!!ERRO!!"
+				echo "$USER ja existe!"
+				exit 0				
+			fi
+			 done;;
+		b) echo "" ;;
+		*) echo "Opção invalida "
+						 EscolhaDeAcao ;;
+	esac
+}
+Sair()
+{
+	read -p "Deseja sair: " SAIR
+	if [ "$SAIR" = "Y" ] || [ "$SAIR" = "y" ]
+	then
+		exit 0
+	fi 
+}
