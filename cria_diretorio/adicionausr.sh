@@ -1,5 +1,5 @@
 #!/bin/bash
-source funcao.source
+source funcao.source #Linha que invoca a função no arquivo source
 
 if [ "$(whoami)" != "root" ] #Verifica se o usuario e admin do sistema
 then
