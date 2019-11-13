@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#author: Wanderson Hermirio dos Santos - <wandersonhermirio@gmail.com>
+#author: Erike Oliveira - <Er1k3.ti@gmail.com>
 #describe: Graphic Interface for OPenBTS
 #version: 0.1
 #arquivo="OpenBTS.conf"
-
+#projeto de extensão = Mineração de dados em fluxo de bits
 
 
 #band="850|900|1800|1900"
